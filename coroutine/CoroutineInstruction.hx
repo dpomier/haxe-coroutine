@@ -1,13 +1,25 @@
 package coroutine;
 
-enum CoroutineInstruction 
-{
-	WaitNextFrame;
-	WaitEndOfFrame;
-	WaitDelay(seconds:Float);
+enum CoroutineInstruction {
 	
 	/**
-	 * run ´routine´ if it is not already running
+	   Wait until the next frame then resume the routine
+	**/
+	WaitNextFrame;
+	
+	/**
+	   Wait until the end of the current frame then resume the routine
+	**/
+	WaitEndOfFrame;
+	
+	/**
+	   Wait `s` seconds then resume the routine at the beginning of the next frame
+	**/
+	WaitDelay(s:Float);
+	
+	/**
+	 * Run the subroutine `routine` and wait until it is complete then resume the routine
 	 */
 	WaitCoroutine(routine:Iterator<CoroutineInstruction>);
+	
 }

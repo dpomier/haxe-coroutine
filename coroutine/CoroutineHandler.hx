@@ -1,23 +1,18 @@
 package coroutine;
-import coroutine.CoroutineHandler.Routine;
+
 import haxe.Timer;
 import haxe.ds.GenericStack;
-
-typedef Routine = Iterator<CoroutineInstruction>;
 
 class CoroutineHandler {
 	
 	private var coroutines:Array<Routine>;
 	private var activeRoutines:GenericStack<Routine>;
-	private var emptyQueue:GenericStack<Routine>;
+	private var emptyStack:GenericStack<Routine>;
 	private var nextFrameStack:GenericStack<Routine>;
 	private var endOfFrameStack:GenericStack<Routine>;
 	private var delayedRoutineList:Array<Routine>;
 	private var delayedTimeList:Array<Float>;
 	private var waitingRoutinesStack:Map<Routine, GenericStack<Routine>>;
-	
-	var timestamp:Float;
-	var i:Int;
 	
 	public function new () {
 		
@@ -81,13 +76,17 @@ class CoroutineHandler {
 		
 	}
 	
+	
+	// Private Methods
+	
+	
 	private inline function updateNextFrameRoutines ():Void {
 		
-		emptyQueue = activeRoutines.isEmpty() ? activeRoutines : throw "n e";
+		emptyStack = activeRoutines;
 		
 		activeRoutines = nextFrameStack;
-		nextFrameStack = emptyQueue;
-		emptyQueue = null;
+		nextFrameStack = emptyStack;
+		emptyStack = null;
 		
 		runActiveRoutines();
 		
@@ -95,15 +94,19 @@ class CoroutineHandler {
 	
 	private inline function updateEndOfFrameRoutines ():Void {
 		
-		emptyQueue = activeRoutines.isEmpty() ? activeRoutines : throw "n e";
+		emptyStack = activeRoutines;
 		
 		activeRoutines  = endOfFrameStack;
-		endOfFrameStack = emptyQueue;
-		emptyQueue = null;
+		endOfFrameStack = emptyStack;
+		emptyStack = null;
 		
 		runActiveRoutines();
 		
 	}
+	
+	private static var timestamp:Float;
+	
+	private var i:Int;
 	
 	private inline function updateDelayedRoutines ():Void {
 		
@@ -177,9 +180,10 @@ class CoroutineHandler {
 				
 			case CoroutineInstruction.WaitCoroutine(subroutine):
 				
-				if (!waitingRoutinesStack.exists(subroutine)) 
-				{
+				if (!waitingRoutinesStack.exists(subroutine)) {
+					
 					waitingRoutinesStack[subroutine] = new GenericStack<Routine>();
+					
 				}
 				
 				waitingRoutinesStack[subroutine].add(routine);
