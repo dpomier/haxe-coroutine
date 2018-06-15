@@ -2,6 +2,7 @@
   "name": "coroutine",
   "url" : "https://github.com/dpomier/haxe-coroutine/",
   "license": "MIT",
+  "tags": ["cross", "utility"],
   "description": "Coroutine for Haxe",
   "version": "1.0.1",
   "releasenote": "dependencies updated",
