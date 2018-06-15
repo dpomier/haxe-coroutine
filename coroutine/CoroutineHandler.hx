@@ -35,18 +35,22 @@ class CoroutineHandler {
 	private var endOfFrameStack:GenericStack<Routine>;
 	private var delayedRoutineList:Array<Routine>;
 	private var delayedTimeList:Array<Float>;
-	private var waitingRoutinesStack:Map<Routine, GenericStack<Routine>>;
+	private var subroutineStack:Array<Routine>;
+	private var waitingRoutineStack:Array<GenericStack<Routine>>;
 	
 	public function new () {
 		
-		coroutines = [];
-		activeRoutines  = new GenericStack<Routine>();
+		coroutines     = [];
+		activeRoutines = new GenericStack<Routine>();
+		
 		nextFrameStack  = new GenericStack<Routine>();
 		endOfFrameStack = new GenericStack<Routine>();
+		
 		delayedRoutineList = new Array<Routine>();
 		delayedTimeList    = new Array<Float>();
-		waitingRoutinesStack = new Map<Routine, GenericStack<Routine>>();
 		
+		subroutineStack     = new Array<Routine>();
+		waitingRoutineStack = new Array<GenericStack<Routine>>();
 	}
 	
 	public function startCoroutine (routine:Iterator<CoroutineInstruction>):Void {
@@ -203,13 +207,16 @@ class CoroutineHandler {
 				
 			case CoroutineInstruction.WaitCoroutine(subroutine):
 				
-				if (!waitingRoutinesStack.exists(subroutine)) {
+				var subroutineIndex:Int = subroutineStack.lastIndexOf(subroutine);
+				
+				if (i == -1) {
 					
-					waitingRoutinesStack[subroutine] = new GenericStack<Routine>();
+					subroutineIndex = subroutineStack.push(subroutine);
+					waitingRoutineStack.push(new GenericStack<Routine>());
 					
 				}
 				
-				waitingRoutinesStack[subroutine].add(routine);
+				waitingRoutineStack[subroutineIndex].add(routine);
 				
 				startCoroutine(subroutine);
 				
@@ -233,7 +240,7 @@ class CoroutineHandler {
 					
 					var wasWaiting:Bool = false;
 					
-					for (waitingRoutines in waitingRoutinesStack) {
+					for (waitingRoutines in waitingRoutineStack) {
 						
 						if (waitingRoutines.remove(routine)) {
 							
@@ -261,13 +268,16 @@ class CoroutineHandler {
 	
 	private inline function releaseSubRoutine (subroutine:Routine, runWaitingRoutines:Bool):Void {
 		
-		if (waitingRoutinesStack.exists(subroutine)) {
+		var length:Int = subroutineStack.length;
+		var subroutineIndex:Int = DoubleArrayTools.lastIndexOf(subroutineStack, subroutine, length);
+		
+		if (subroutineIndex != -1) {
 			
 			if (runWaitingRoutines) {
 				
-				var waitingRoutines = waitingRoutinesStack.get(subroutine);
+				var waitingRoutines = waitingRoutineStack[subroutineIndex];
 				
-				waitingRoutinesStack.remove(subroutine);
+				DoubleArrayTools.eraseAt(subroutineStack, waitingRoutineStack, subroutineIndex, length);
 				
 				for (waitingRoutine in waitingRoutines) {
 					
@@ -277,9 +287,51 @@ class CoroutineHandler {
 				
 			} else {
 				
-				waitingRoutinesStack.remove(subroutine);
+				DoubleArrayTools.eraseAt(subroutineStack, waitingRoutineStack, subroutineIndex, length);
 				
 			}
+			
+		}
+		
+	}
+	
+}
+
+private extern class DoubleArrayTools {
+	
+	public static inline function lastIndexOf<K> (arrayKey:Array<K>, key:K, length:Int):Int {
+		
+		var i:Int = length;
+		
+		while (--i != -1) {
+			
+			if (arrayKey[i] == key) {
+				break;
+			}
+			
+		}
+		
+		return i;
+		
+	}
+	
+	public static inline function eraseAt<K, V> (arrayKey:Array<K>, arrayValue:Array<V>, index:Int, ?length:Int):Void {
+		
+		if (length == null) {
+			
+			length = arrayKey.length;
+			
+		}
+		
+		if (index == length - 1) {
+			
+			arrayKey.pop();
+			arrayValue.pop();
+			
+		} else {
+			
+			arrayKey[index]   = arrayKey.pop();
+			arrayValue[index] = arrayValue.pop();
 			
 		}
 		
