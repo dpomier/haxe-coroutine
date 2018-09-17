@@ -207,19 +207,18 @@ class CoroutineHandler {
 				
 			case CoroutineInstruction.WaitCoroutine(subroutine):
 				
-				var subroutineIndex:Int = subroutineStack.lastIndexOf(subroutine);
+				i = subroutineStack.lastIndexOf(subroutine);
 				
 				if (i == -1) {
 					
-					subroutineIndex = subroutineStack.push(subroutine);
+					i = subroutineStack.push(subroutine) - 1;
 					waitingRoutineStack.push(new GenericStack<Routine>());
 					
 				}
 				
-				waitingRoutineStack[subroutineIndex].add(routine);
+				waitingRoutineStack[i].add(routine);
 				
 				startCoroutine(subroutine);
-				
 		}
 	}
 	
