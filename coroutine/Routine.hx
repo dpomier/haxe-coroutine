@@ -33,11 +33,11 @@ extern abstract Routine (RoutineType) {
 		return this.next();
 	}
 	
-	@:to inline function toIterator ():Iterator<CoroutineInstruction> {
+	@:to @:noCompletion inline function toIterator ():Iterator<CoroutineInstruction> {
 		return cast this;
 	}
 	
-	@:from inline static function fromIterator (v:RoutineType):Routine {
+	@:from @:noCompletion inline static function fromIterator (v:RoutineType):Routine {
 		return cast v;
 	}
 	
