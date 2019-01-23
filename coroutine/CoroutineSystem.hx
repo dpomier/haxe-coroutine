@@ -184,12 +184,6 @@ class CoroutineSystem {
 		
 		var current:RoutineInstruction = routine.next();
 		
-		if (current == null) {
-			
-			current = RoutineInstruction.WaitNextFrame;
-			
-		}
-		
 		switch (current) {
 			
 			case RoutineInstruction.WaitNextFrame:

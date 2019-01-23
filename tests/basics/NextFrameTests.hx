@@ -17,11 +17,11 @@ class NextFrameTests {
 
         var ch = new CoroutineSystem();
 
-        ch.startCoroutine( returnNull(obj) );
+        ch.startCoroutine( returnA(obj) );
         Assert.equals(1, obj.v[0]);
         Assert.equals(1, obj.v.length);
 
-        ch.startCoroutine( returnEnum(obj) );
+        ch.startCoroutine( returnB(obj) );
         Assert.equals(10, obj.v[1]);
         Assert.equals(2, obj.v.length);
 
@@ -44,10 +44,10 @@ class NextFrameTests {
         }
     }
 
-    function returnNull (obj:{v:Array<Int>}) {
+    function returnA (obj:{v:Array<Int>}) {
 
         obj.v.push(1);
-        @yield return null;
+        @yield return WaitNextFrame;
 
         obj.v.push(2);
         @yield return WaitNextFrame;
@@ -55,13 +55,13 @@ class NextFrameTests {
         obj.v.push(3);
     }
 
-    function returnEnum (obj:{v:Array<Int>}) {
+    function returnB (obj:{v:Array<Int>}) {
         
         obj.v.push(10);
         @yield return WaitNextFrame;
 
         obj.v.push(20);
-        @yield return null;
+        @yield return WaitNextFrame;
 
         obj.v.push(30);
     }
