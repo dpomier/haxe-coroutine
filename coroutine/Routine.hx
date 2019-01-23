@@ -29,11 +29,11 @@ extern abstract Routine (RoutineType) {
 		return this.hasNext();
 	}
 	
-	public inline function next ():CoroutineInstruction {
+	public inline function next ():RoutineInstruction {
 		return this.next();
 	}
 	
-	@:to @:noCompletion inline function toIterator ():Iterator<CoroutineInstruction> {
+	@:to @:noCompletion inline function toIterator ():Iterator<RoutineInstruction> {
 		return cast this;
 	}
 	
@@ -43,4 +43,4 @@ extern abstract Routine (RoutineType) {
 	
 }
 
-private typedef RoutineType = #if (neko || js || php || python || lua || hl) Iterator<CoroutineInstruction> #else Dynamic #end;
+private typedef RoutineType = #if (neko || js || php || python || lua || hl) Iterator<RoutineInstruction> #else Dynamic #end;

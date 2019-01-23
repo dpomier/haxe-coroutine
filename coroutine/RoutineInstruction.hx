@@ -23,7 +23,7 @@
  */
 package coroutine;
 
-enum CoroutineInstruction {
+enum RoutineInstruction {
 	
 	/**
 	   Wait until the next frame then resume the routine
@@ -43,6 +43,6 @@ enum CoroutineInstruction {
 	/**
 	 * Run the subroutine `routine` and wait until it is complete then resume the routine
 	 */
-	WaitCoroutine(routine:Iterator<CoroutineInstruction>);
+	WaitCoroutine(routine:Iterator<RoutineInstruction>);
 	
 }

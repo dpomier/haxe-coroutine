@@ -26,7 +26,7 @@ package coroutine;
 import haxe.Timer;
 import haxe.ds.GenericStack;
 
-class CoroutineHandler {
+class CoroutineSystem {
 	
 	private var coroutines:Array<Routine>;
 	private var activeRoutines:GenericStack<Routine>;
@@ -53,7 +53,7 @@ class CoroutineHandler {
 		waitingRoutineStack = new Array<GenericStack<Routine>>();
 	}
 	
-	public function startCoroutine (routine:Iterator<CoroutineInstruction>):Void {
+	public function startCoroutine (routine:Iterator<RoutineInstruction>):Void {
 		
 		if (coroutines.indexOf(routine) != -1) {
 			
@@ -67,7 +67,7 @@ class CoroutineHandler {
 		
 	}
 	
-	public function stopCoroutine (routine:Iterator<CoroutineInstruction>):Void {
+	public function stopCoroutine (routine:Iterator<RoutineInstruction>):Void {
 		
 		if (coroutines.remove(routine)) {
 			
@@ -182,30 +182,30 @@ class CoroutineHandler {
 			
 		}
 		
-		var current:CoroutineInstruction = routine.next();
+		var current:RoutineInstruction = routine.next();
 		
 		if (current == null) {
 			
-			current = CoroutineInstruction.WaitNextFrame;
+			current = RoutineInstruction.WaitNextFrame;
 			
 		}
 		
 		switch (current) {
 			
-			case CoroutineInstruction.WaitNextFrame:
+			case RoutineInstruction.WaitNextFrame:
 				
 				nextFrameStack.add(routine);
 				
-			case CoroutineInstruction.WaitEndOfFrame:
+			case RoutineInstruction.WaitEndOfFrame:
 				
 				endOfFrameStack.add(routine);
 				
-			case CoroutineInstruction.WaitDelay(seconds):
+			case RoutineInstruction.WaitDelay(seconds):
 				
 				delayedRoutineList.push(routine);
 				delayedTimeList.push(Timer.stamp() + seconds);
 				
-			case CoroutineInstruction.WaitCoroutine(subroutine):
+			case RoutineInstruction.WaitCoroutine(subroutine):
 				
 				i = subroutineStack.lastIndexOf(subroutine);
 				
