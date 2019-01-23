@@ -1,0 +1,2 @@
+--macro yield.parser.Parser.parseOnImport("coroutine.Routine")
+--macro yield.parser.Parser.parseOnImport("coroutine.RoutineInstruction")

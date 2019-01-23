@@ -3,7 +3,6 @@ import utest.Assert;
 import coroutine.CoroutineSystem;
 import coroutine.RoutineInstruction;
 
-@:yield
 class NextFrameTests {
 
     private var assertCount:Int;
