@@ -37,6 +37,9 @@ class CoroutineSystem {
 	private var delayedTimeList:Array<Float>;
 	private var subroutineStack:Array<Routine>;
 	private var waitingRoutineStack:Array<GenericStack<Routine>>;
+
+	private static var subroutines:Map<Int, Routine> = new Map<Int, Routine>();
+	private static var subroutinesCounter:Int = 0;
 	
 	public function new () {
 		
@@ -53,7 +56,7 @@ class CoroutineSystem {
 		waitingRoutineStack = new Array<GenericStack<Routine>>();
 	}
 	
-	public function startCoroutine (routine:Iterator<RoutineInstruction>):Void {
+	public function startCoroutine (routine:Routine):Void {
 		
 		if (coroutines.indexOf(routine) != -1) {
 			
@@ -67,7 +70,7 @@ class CoroutineSystem {
 		
 	}
 	
-	public function stopCoroutine (routine:Iterator<RoutineInstruction>):Void {
+	public function stopCoroutine (routine:Routine):Void {
 		
 		if (coroutines.remove(routine)) {
 			
@@ -89,7 +92,7 @@ class CoroutineSystem {
 		
 	}
 	
-	public function updateCoroutineEnterFrame ():Void {
+	public function updateEnterFrame ():Void {
 		
 		updateNextFrameRoutines();
 		
@@ -97,7 +100,7 @@ class CoroutineSystem {
 		
 	}
 	
-	public function updateCoroutineExitFrame ():Void {
+	public function updateExitFrame ():Void {
 		
 		updateEndOfFrameRoutines();
 		
@@ -182,37 +185,41 @@ class CoroutineSystem {
 			
 		}
 		
-		var current:RoutineInstruction = routine.next();
+		var current:Int = cast routine.next();
 		
-		switch (current) {
-			
-			case RoutineInstruction.WaitNextFrame:
+		if (current == 0) {
 				
 				nextFrameStack.add(routine);
 				
-			case RoutineInstruction.WaitEndOfFrame:
+		} else if (current == 1) {
 				
 				endOfFrameStack.add(routine);
 				
-			case RoutineInstruction.WaitDelay(seconds):
+		} else if (current >= 2) {
+
+			delayedRoutineList.push(routine);
+			delayedTimeList.push(Timer.stamp() + (current - 2) / 1000);
+
+		} else {
+
+			var subroutine:Routine = subroutines.get(current);
+
+			trace("Start subroutine", subroutine, current);
+
+			subroutines.remove(current);
+
+			i = subroutineStack.lastIndexOf(subroutine);
+
+			if (i == -1) {
+			
+				i = subroutineStack.push(subroutine) - 1;
+				waitingRoutineStack.push(new GenericStack<Routine>());
 				
-				delayedRoutineList.push(routine);
-				delayedTimeList.push(Timer.stamp() + seconds);
-				
-			case RoutineInstruction.WaitCoroutine(subroutine):
-				
-				i = subroutineStack.lastIndexOf(subroutine);
-				
-				if (i == -1) {
-					
-					i = subroutineStack.push(subroutine) - 1;
-					waitingRoutineStack.push(new GenericStack<Routine>());
-					
-				}
-				
-				waitingRoutineStack[i].add(routine);
-				
-				startCoroutine(subroutine);
+			}
+			
+			waitingRoutineStack[i].add(routine);
+			
+			startCoroutine(subroutine);
 		}
 	}
 	

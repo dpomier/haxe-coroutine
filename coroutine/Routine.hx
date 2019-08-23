@@ -23,24 +23,25 @@
  */
 package coroutine;
 
-extern abstract Routine (RoutineType) {
+// @:forward
+// extern abstract Routine (RoutineType) {
 	
-	public inline function hasNext ():Bool {
-		return this.hasNext();
-	}
+// 	public inline function hasNext ():Bool {
+// 		return this.hasNext();
+// 	}
 	
-	public inline function next ():RoutineInstruction {
-		return this.next();
-	}
+// 	public inline function next ():RoutineInstruction {
+// 		return this.next();
+// 	}
 	
-	@:to @:noCompletion inline function toIterator ():Iterator<RoutineInstruction> {
-		return cast this;
-	}
+// 	@:to @:noCompletion inline function toIterator ():Iterator<RoutineInstruction> {
+// 		return cast this;
+// 	}
 	
-	@:from @:noCompletion inline static function fromIterator (v:RoutineType):Routine {
-		return cast v;
-	}
+// 	@:from @:noCompletion inline static function fromIterator (v:RoutineType):Routine {
+// 		return cast v;
+// 	}
 	
-}
+// }
 
-private typedef RoutineType = #if (neko || js || php || python || lua || hl) Iterator<RoutineInstruction> #else Dynamic #end;
+typedef Routine = #if (neko || js || php || python || lua || hl) Iterator<RoutineInstruction> #else Dynamic #end;

@@ -23,26 +23,32 @@
  */
 package coroutine;
 
-enum RoutineInstruction {
+abstract RoutineInstruction (Int) {
 	
 	/**
 	   Wait until the next frame then resume the routine
 	**/
-	WaitNextFrame;
+	public static inline var WaitNextFrame:RoutineInstruction = cast 0;
 	
 	/**
 	   Wait until the end of the current frame then resume the routine
 	**/
-	WaitEndOfFrame;
+	public static inline var WaitEndOfFrame:RoutineInstruction = cast 1;
 	
 	/**
 	   Wait `s` seconds then resume the routine at the beginning of the next frame
 	**/
-	WaitDelay(s:Float);
+	public static inline function WaitDelay(s:Float):RoutineInstruction {
+		return cast 2 + Std.int(1000 * s);
+	}
 	
 	/**
 	 * Run the subroutine `routine` and wait until it is complete then resume the routine
 	 */
-	WaitCoroutine(routine:Iterator<RoutineInstruction>);
+	public static inline function WaitCoroutine(routine:Iterator<RoutineInstruction>):RoutineInstruction {
+		@:privateAccess coroutine.CoroutineSystem.subroutinesCounter--;
+		@:privateAccess coroutine.CoroutineSystem.subroutines.set(coroutine.CoroutineSystem.subroutinesCounter, routine);
+		return cast @:privateAccess coroutine.CoroutineSystem.subroutinesCounter;
+	}
 	
 }

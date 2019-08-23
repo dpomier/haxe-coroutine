@@ -1,7 +1,7 @@
 package tests.basics;
 import utest.Assert;
 import coroutine.CoroutineSystem;
-import coroutine.RoutineInstruction;
+import coroutine.RoutineInstruction.*;
 
 class NextFrameTests {
 
@@ -27,7 +27,7 @@ class NextFrameTests {
 
         for (i in 0...6) {
 
-            ch.updateCoroutineEnterFrame();
+            ch.updateEnterFrame();
 
             switch (i) {
                 case 0:
@@ -40,7 +40,7 @@ class NextFrameTests {
                     Assert.equals(6, obj.v.length);
             }
 
-            ch.updateCoroutineExitFrame();
+            ch.updateExitFrame();
         }
     }
 
@@ -61,7 +61,7 @@ class NextFrameTests {
         @yield return WaitNextFrame;
 
         obj.v.push(20);
-        @yield return WaitNextFrame;
+        @yield return null;
 
         obj.v.push(30);
     }

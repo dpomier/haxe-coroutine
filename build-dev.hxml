@@ -3,3 +3,5 @@
 -lib yield
 -lib coroutine
 --interp
+-dce full
+-D dump=pretty
