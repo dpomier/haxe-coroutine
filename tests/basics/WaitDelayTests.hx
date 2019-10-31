@@ -1,12 +1,12 @@
 package tests.basics;
 import utest.Assert;
-import coroutine.CoroutineSystem;
 import haxe.Timer;
 import coroutine.RoutineInstruction.*;
+import coroutine.CoroutineProcessor;
 
 class WaitDelayTests {
 
-    private var ch = new CoroutineSystem();
+    private var ch = new CoroutineProcessor();
 
     public function new () {
         
@@ -15,6 +15,7 @@ class WaitDelayTests {
     private function loop () {
 
         ch.updateEnterFrame();
+        ch.updateTimer( haxe.Timer.stamp() );
         ch.updateExitFrame();
 
         Timer.delay(loop, 16);

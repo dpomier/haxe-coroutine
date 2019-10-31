@@ -1,9 +1,9 @@
 package tests.basics;
 import utest.Assert;
-import coroutine.CoroutineSystem;
 import coroutine.RoutineInstruction.*;
 
 class NextFrameTests {
+import coroutine.CoroutineProcessor;
 
     private var assertCount:Int;
 
@@ -15,7 +15,7 @@ class NextFrameTests {
 
         var obj = { v: [] };
 
-        var ch = new CoroutineSystem();
+        var ch = new CoroutineProcessor();
 
         ch.startCoroutine( returnA(obj) );
         Assert.equals(1, obj.v[0]);
@@ -28,6 +28,7 @@ class NextFrameTests {
         for (i in 0...6) {
 
             ch.updateEnterFrame();
+            ch.updateTimer( haxe.Timer.stamp() );
 
             switch (i) {
                 case 0:

@@ -1,12 +1,12 @@
 package tests.basics;
 import utest.Assert;
-import coroutine.CoroutineSystem;
 import haxe.Timer;
 import coroutine.RoutineInstruction.*;
+import coroutine.CoroutineProcessor;
 
 class SubroutineTests {
 
-    private var ch = new CoroutineSystem();
+    var ch = new CoroutineProcessor();
 
     public function new () {
         

@@ -26,7 +26,7 @@ package coroutine;
 import haxe.Timer;
 import haxe.ds.GenericStack;
 
-class CoroutineSystem {
+class CoroutineProcessor {
 	
 	private var coroutines:Array<Routine>;
 	private var activeRoutines:GenericStack<Routine>;
@@ -93,17 +93,24 @@ class CoroutineSystem {
 	}
 	
 	public function updateEnterFrame ():Void {
-		
+
 		updateNextFrameRoutines();
-		
-		updateDelayedRoutines();
-		
+
+	}
+
+	/**
+	 * @param timestamp Timestamp in seconds with fractions.
+	 */
+	public function updateTimer (timestamp:Float):Void {
+
+		updateDelayedRoutines(timestamp);
+
 	}
 	
 	public function updateExitFrame ():Void {
-		
+
 		updateEndOfFrameRoutines();
-		
+
 	}
 	
 	
@@ -136,24 +143,26 @@ class CoroutineSystem {
 	
 	private static var timestamp:Float;
 	
-	private var i:Int;
-	
-	private inline function updateDelayedRoutines ():Void {
+	private inline function updateDelayedRoutines (timestamp:Float):Void {
 		
-		i = delayedRoutineList.length;
+		var i:Int = delayedRoutineList.length;
+		var last:Int = i;
 		
 		if (i != 0) {
-			
-			timestamp = Timer.stamp();
 			
 			while (--i != -1) {
 				
 				if (timestamp > delayedTimeList[i]) {
 					
 					activeRoutines.add(delayedRoutineList[i]);
+
+					delayedRoutineList[i] = delayedRoutineList[last];
+					delayedRoutineList.pop();
 					
-					delayedRoutineList.splice(i, 1);
-					delayedTimeList.splice(i, 1);
+					delayedTimeList[i] = delayedTimeList[last];
+					delayedTimeList.pop();
+
+					last--;
 					
 				}
 				
@@ -189,11 +198,11 @@ class CoroutineSystem {
 		
 		if (current == 0) {
 				
-				nextFrameStack.add(routine);
+			nextFrameStack.add(routine);
 				
 		} else if (current == 1) {
 				
-				endOfFrameStack.add(routine);
+			endOfFrameStack.add(routine);
 				
 		} else if (current >= 2) {
 
@@ -204,11 +213,9 @@ class CoroutineSystem {
 
 			var subroutine:Routine = subroutines.get(current);
 
-			trace("Start subroutine", subroutine, current);
-
 			subroutines.remove(current);
 
-			i = subroutineStack.lastIndexOf(subroutine);
+			var i:Int = subroutineStack.lastIndexOf(subroutine);
 
 			if (i == -1) {
 			
@@ -229,7 +236,7 @@ class CoroutineSystem {
 			
 			if (!endOfFrameStack.remove(routine)) {
 				
-				i = delayedRoutineList.indexOf(routine);
+				var i:Int = delayedRoutineList.indexOf(routine);
 				
 				if (i != -1) {
 					
