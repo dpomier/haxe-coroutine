@@ -56,5 +56,14 @@ abstract RoutineInstruction (Int) {
 		return cast @:privateAccess coroutine.CoroutineProcessor.subroutinesCounter;
 	}
 	
+	/**
+	 * Wait while `f` return true.
+	**/
+	public static inline function WaitWhile(f:Void->Bool):RoutineInstruction {
+		return WaitRoutine({
+            hasNext: function () return f(),
+            next: function () return WaitNextFrame
+        });
+	}
 
 }
