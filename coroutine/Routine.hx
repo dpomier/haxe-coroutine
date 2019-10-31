@@ -23,25 +23,38 @@
  */
 package coroutine;
 
-// @:forward
-// extern abstract Routine (RoutineType) {
-	
-// 	public inline function hasNext ():Bool {
-// 		return this.hasNext();
-// 	}
-	
-// 	public inline function next ():RoutineInstruction {
-// 		return this.next();
-// 	}
-	
-// 	@:to @:noCompletion inline function toIterator ():Iterator<RoutineInstruction> {
-// 		return cast this;
-// 	}
-	
-// 	@:from @:noCompletion inline static function fromIterator (v:RoutineType):Routine {
-// 		return cast v;
-// 	}
-	
-// }
+/**
+ * 
+ */
+typedef Routine = Iterator<RoutineInstruction>;
 
-typedef Routine = #if (neko || js || php || python || lua || hl) Iterator<RoutineInstruction> #else Dynamic #end;
+abstract RoutineInstruction (Int) {
+
+    /**
+	 * Wait until the next frame then resume the routine
+	**/
+	public static inline var WaitNextFrame:RoutineInstruction = cast 0;
+	
+	/**
+	 * Wait until the end of the current frame then resume the routine
+	**/
+	public static inline var WaitEndOfFrame:RoutineInstruction = cast 1;
+	
+	/**
+	 * Wait `s` seconds then resume the routine at the beginning of the next frame
+	**/
+	public static inline function WaitDelay(s:Float):RoutineInstruction {
+		return cast 2 + Std.int(1000 * s);
+	}
+	
+	/**
+	 * Run the subroutine `routine` and wait until it is complete then resume the routine
+	 */
+	public static inline function WaitRoutine(routine:Routine):RoutineInstruction {
+		@:privateAccess coroutine.CoroutineProcessor.subroutinesCounter--;
+		@:privateAccess coroutine.CoroutineProcessor.subroutines.set(coroutine.CoroutineProcessor.subroutinesCounter, routine);
+		return cast @:privateAccess coroutine.CoroutineProcessor.subroutinesCounter;
+	}
+	
+
+}

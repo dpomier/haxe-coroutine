@@ -1,7 +1,8 @@
 package tests.basics;
 import utest.Assert;
 import haxe.Timer;
-import coroutine.RoutineInstruction.*;
+import coroutine.Routine;
+import coroutine.Routine.RoutineInstruction.WaitDelay;
 import coroutine.CoroutineProcessor;
 
 class WaitDelayTests {
@@ -48,7 +49,7 @@ class WaitDelayTests {
         }, 550);
     }
 
-    function delay (obj:{ value:Int }) {
+    function delay (obj:{ value:Int }):Routine {
         
         obj.value = 1;
         @yield return WaitDelay(0.25);

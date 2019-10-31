@@ -1,7 +1,8 @@
 package tests.basics;
 import utest.Assert;
+import coroutine.Routine;
+import coroutine.Routine.RoutineInstruction.*;
 import haxe.Timer;
-import coroutine.RoutineInstruction.*;
 import coroutine.CoroutineProcessor;
 
 class SubroutineTests {
@@ -40,17 +41,17 @@ class SubroutineTests {
 
     function routine (obj:Array<Int>) {
         obj.push(1);
-        @yield return WaitNextFrame;
+        @yield return RoutineInstruction.WaitNextFrame;
         obj.push(2);
-        @yield return WaitCoroutine( subroutine(obj) );
+        @yield return WaitRoutine( subroutine(obj) );
         obj.push(3);
     }
 
     function subroutine (obj:Array<Int>) {
         obj.push(10);
-        @yield return WaitNextFrame;
+        @yield return null;
         obj.push(11);
-        @yield return WaitEndOfFrame;
+        @yield return RoutineInstruction.WaitEndOfFrame;
         obj.push(12);
         @yield return null;
         obj.push(13);

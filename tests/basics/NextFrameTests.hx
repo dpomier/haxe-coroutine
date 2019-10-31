@@ -1,6 +1,5 @@
 package tests.basics;
 import utest.Assert;
-import coroutine.RoutineInstruction.*;
 
 class NextFrameTests {
 import coroutine.CoroutineProcessor;
