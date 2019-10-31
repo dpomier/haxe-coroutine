@@ -1,8 +1,9 @@
 package tests.basics;
+
 import utest.Assert;
 
 @:yield
-class YieldTests {
+class YieldTests implements utest.ITest {
 
     public function new () {
         

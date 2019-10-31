@@ -1,10 +1,10 @@
 package tests.basics;
+
 import utest.Assert;
-
-class NextFrameTests {
 import coroutine.CoroutineProcessor;
+import coroutine.Routine.RoutineInstruction.*;
 
-    private var assertCount:Int;
+class NextFrameTests implements utest.ITest {
 
     public function new () {
         

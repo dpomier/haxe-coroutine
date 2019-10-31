@@ -14,7 +14,7 @@ class Tests {
 
         r.addCase(new YieldTests());
         r.addCase(new NextFrameTests());
-        // r.addCase(new WaitDelayTests());
+        r.addCase(new WaitDelayTests());
         r.addCase(new SubroutineTests());
 
         Report.create(r);

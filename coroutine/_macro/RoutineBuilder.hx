@@ -1,5 +1,4 @@
 package coroutine._macro;
-
 #if macro
 import haxe.macro.Context;
 import haxe.macro.Expr;

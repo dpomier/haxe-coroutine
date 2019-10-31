@@ -1,19 +1,20 @@
 package tests.basics;
-import utest.Assert;
+
 import haxe.Timer;
+import utest.Assert;
 import coroutine.Routine;
 import coroutine.Routine.RoutineInstruction.WaitDelay;
 import coroutine.CoroutineProcessor;
 
-class WaitDelayTests {
+class WaitDelayTests implements utest.ITest {
 
-    private var ch = new CoroutineProcessor();
+    var ch = new CoroutineProcessor();
 
     public function new () {
         
     }
 
-    private function loop () {
+    function loop () {
 
         ch.updateEnterFrame();
         ch.updateTimer( haxe.Timer.stamp() );
