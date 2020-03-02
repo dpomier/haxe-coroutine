@@ -58,11 +58,8 @@ class CoroutineProcessor {
 	
 	public function startCoroutine (routine:Routine):Void {
 		
-		if (coroutines.indexOf(routine) != -1) {
-			
+		if (coroutines.indexOf(routine) != -1)
 			return;
-			
-		}
 		
 		coroutines.push(routine);
 		
@@ -72,11 +69,8 @@ class CoroutineProcessor {
 	
 	public function stopCoroutine (routine:Routine):Void {
 		
-		if (coroutines.remove(routine)) {
-			
+		if (coroutines.remove(routine)) 
 			removeRoutine(routine, true);
-			
-		}
 		
 	}
 	
@@ -84,11 +78,8 @@ class CoroutineProcessor {
 		
 		var i:Int = coroutines.length;
 		
-		while (--i != -1) {
-			
+		while (--i != -1) 
 			removeRoutine(coroutines.pop(), false);
-			
-		}
 		
 	}
 	
@@ -175,11 +166,8 @@ class CoroutineProcessor {
 	
 	private function runActiveRoutines ():Void {
 		
-		while (!activeRoutines.isEmpty()) {
-			
+		while (!activeRoutines.isEmpty())
 			runRoutine(activeRoutines.pop());
-			
-		}
 	}
 	
 	private function runRoutine (routine:Routine):Void {
