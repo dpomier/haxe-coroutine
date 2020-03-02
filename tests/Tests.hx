@@ -1,11 +1,6 @@
 package tests;
 import utest.Runner;
 import utest.ui.Report;
-import tests.basics.YieldTests;
-import tests.basics.NextFrameTests;
-import tests.basics.WaitDelayTests;
-import tests.basics.SubroutineTests;
-import tests.basics.WaitWhileTests;
 
 class Tests {
 
@@ -13,15 +8,30 @@ class Tests {
 
         var r = new Runner();
 
-        r.addCase(new YieldTests());
-        r.addCase(new NextFrameTests());
-        r.addCase(new WaitDelayTests());
-        r.addCase(new SubroutineTests());
-        r.addCase(new WaitWhileTests());
+        r.addCase(new tests.basics.YieldTests());
+        r.addCase(new tests.basics.NextFrameTests());
+        r.addCase(new tests.basics.WaitDelayTests());
+        r.addCase(new tests.basics.SubroutineTests());
+        r.addCase(new tests.basics.WaitWhileTests());
+
+        r.addCase(new tests.benchs.Starting());
+        r.addCase(new tests.benchs.WaitNextFrame());
+        r.addCase(new tests.benchs.WaitRoutine());
 
         Report.create(r);
         r.run();
 
     }
+
+    public static inline function println (v:String)
+        #if travix
+          travix.Logger.println(v);
+        #elseif (flash || air || air3)
+          flash.Lib.trace(v);
+        #elseif (sys || nodejs)
+          Sys.println(v);
+        #else
+          trace(v);
+        #end
 
 }
