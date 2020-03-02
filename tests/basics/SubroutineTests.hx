@@ -57,4 +57,16 @@ class SubroutineTests implements utest.ITest {
         obj.push(13);
     }
 
+    public function testOverflowProof () {
+
+        var routine:Routine = (function () {
+            @yield return WaitNextFrame;
+        })();
+
+        ch.startCoroutine( routine );
+        ch.startCoroutine( routine );
+
+        Assert.pass();
+
+    }
 }

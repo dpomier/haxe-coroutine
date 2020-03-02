@@ -58,9 +58,6 @@ class CoroutineProcessor {
 	
 	public function startCoroutine (routine:Routine):Void {
 		
-		if (coroutines.indexOf(routine) != -1)
-			return;
-		
 		coroutines.push(routine);
 		
 		runRoutine(routine);
