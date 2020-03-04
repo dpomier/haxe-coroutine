@@ -4,4 +4,4 @@
 -lib coroutine
 --interp
 -dce full
--D dump=pretty
+-D analyzer-optimize
