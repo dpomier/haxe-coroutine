@@ -23,47 +23,35 @@
  */
 package coroutine;
 
-/**
- * 
- */
-typedef Routine = Iterator<RoutineInstruction>;
-
-abstract RoutineInstruction (Int) {
-
-    /**
+enum RoutineInstruction {
+	/**
 	 * Wait until the next frame then resume the routine
 	**/
-	public static inline var WaitNextFrame:RoutineInstruction = cast 0;
-	
+	WaitNextFrame;
 	/**
 	 * Wait until the end of the current frame then resume the routine
 	**/
-	public static inline var WaitEndOfFrame:RoutineInstruction = cast 1;
-	
+	WaitEndOfFrame;
 	/**
 	 * Wait `s` seconds then resume the routine at the beginning of the next frame
 	**/
-	public static inline function WaitDelay(s:Float):RoutineInstruction {
-		return cast 2 + Std.int(1000 * s);
-	}
-	
+	WaitDelay(seconds:Float);
 	/**
 	 * Run the subroutine `routine` and wait until it is complete then resume the routine
 	 */
-	public static inline function WaitRoutine(routine:Routine):RoutineInstruction {
-		@:privateAccess coroutine.CoroutineProcessor.subroutinesCounter--;
-		@:privateAccess coroutine.CoroutineProcessor.subroutines.set(coroutine.CoroutineProcessor.subroutinesCounter, routine);
-		return cast @:privateAccess coroutine.CoroutineProcessor.subroutinesCounter;
-	}
-	
+	WaitRoutine(routine:Routine);
 	/**
 	 * Wait while `f` return true.
 	**/
-	public static inline function WaitWhile(f:Void->Bool):RoutineInstruction {
-		return WaitRoutine({
-            hasNext: function () return f(),
-            next: function () return WaitNextFrame
-        });
-	}
-
+	WaitWhile(f:Void->Bool);
 }
+
+/**
+ * Alias for iterator of routine instructions. Can be used to start coroutine execution.
+ * See `CoroutineProcessor.startCoroutine` for an exemple.
+ */
+#if display 
+typedef Routine = Iterator<RoutineInstruction>;
+#else
+typedef Routine = Iterator<coroutine._.RI>;
+#end
