@@ -56,6 +56,10 @@ class CoroutineProcessor {
 		waitingRoutineStack = new Array<GenericStack<Routine>>();
 	}
 	
+	/**
+	 * Starts a coroutine.
+	 * @param routine 
+	 */
 	public function startCoroutine (routine:Routine):Void {
 		
 		coroutines.push(routine);
