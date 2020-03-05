@@ -15,6 +15,9 @@ class RoutineBuilder {
 
     static function onYield (e:Expr, t:Null<ComplexType>):Null<YieldedExpr> {
 
+        if (Context.defined("display"))
+            return null;
+
         var expr = switch [t, e] {
 
             case [_,
