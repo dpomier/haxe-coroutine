@@ -3,7 +3,7 @@ package coroutine._;
 import coroutine.Routine.RoutineInstruction;
 import coroutine.CoroutineProcessor;
 
-abstract RI (Int) {
+abstract RI (Int) to Int {
 	public static inline function fromNull ():RI {
 		return waitNext();
 	}

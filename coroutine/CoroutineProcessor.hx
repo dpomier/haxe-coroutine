@@ -183,26 +183,28 @@ class CoroutineProcessor {
 			
 		}
 		
-		var current:Int = cast routine.next();
+		var current:Int = routine.next();
 		
-		if (current == 0) {
+		if (current == coroutine._.RI.waitNext()) {
 				
 			nextFrameStack.add(routine);
 				
-		} else if (current == 1) {
+		} else if (current == coroutine._.RI.waitEnd()) {
 				
 			endOfFrameStack.add(routine);
 				
-		} else if (current >= 2) {
+		} else if (current >= (coroutine._.RI.waitDelay(0):Int)) {
 
 			delayedRoutineList.push(routine);
 			delayedTimeList.push(Timer.stamp() + (current - 2) / 1000);
 
 		} else {
 
-			var subroutine:Routine = subroutines.get(current);
+			var subroutineIndex:Int = current;
 
-			subroutines.remove(current);
+			var subroutine:Routine = subroutines.get(subroutineIndex);
+
+			subroutines.remove(subroutineIndex);
 
 			var i:Int = subroutineStack.lastIndexOf(subroutine);
 
