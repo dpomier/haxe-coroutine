@@ -26,9 +26,13 @@ class RoutineBuilder {
                 | { expr: EUntyped(w), pos: _ }
                 | { expr: ECast(w,_), pos: _ }
                 | { expr: ECheckType(w,_), pos: _ }
-                | { expr: EBlock([w]), pos: _ }]:
+                ]:
 
                 return onYield(w, t);
+
+            case [_, { expr: EBlock(l), pos: _ }] if (l.length > 0):
+
+                return onYield(l[l.length - 1], t);
 
             case [macro:coroutine.Routine.RoutineInstruction, macro null]:
                 macro coroutine._.RI.fromNull();
