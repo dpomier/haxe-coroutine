@@ -38,7 +38,7 @@ class CoroutineProcessor {
 	private var subroutineStack:Array<Routine>;
 	private var waitingRoutineStack:Array<GenericStack<Routine>>;
 
-	private static var subroutines:Map<Int, Routine> = new Map<Int, Routine>();
+	private static var subroutines = new Map<Int, Routine>();
 	private static var subroutinesCounter:Int = 0;
 	
 	public function new () {
@@ -55,10 +55,9 @@ class CoroutineProcessor {
 		subroutineStack     = new Array<Routine>();
 		waitingRoutineStack = new Array<GenericStack<Routine>>();
 	}
-	
+
 	/**
-	 * Starts a coroutine.
-	 * @param routine 
+	 * Runs `routine` as a coroutine.
 	 */
 	public function startCoroutine (routine:Routine):Void {
 		
@@ -67,26 +66,38 @@ class CoroutineProcessor {
 		runRoutine(routine);
 		
 	}
-	
+
+	/**
+	 * Stops `routine`.
+	 */
 	public function stopCoroutine (routine:Routine):Void {
-		
-		if (coroutines.remove(routine)) 
+
+		if (coroutines.remove(routine))
 			removeRoutine(routine, true);
-		
+
 	}
-	
+
+	/**
+	 * Stops every coroutines from `this` instance.
+	 */
 	public function stopAllCoroutines ():Void {
-		
+
 		var i:Int = coroutines.length;
-		
+
 		while (--i != -1) 
 			removeRoutine(coroutines.pop(), false);
-		
+
 	}
 	
 	public function updateEnterFrame ():Void {
 
-		updateNextFrameRoutines();
+		emptyStack = activeRoutines;
+
+		activeRoutines = nextFrameStack;
+		nextFrameStack = emptyStack;
+		emptyStack = null;
+
+		runRoutines(activeRoutines);
 
 	}
 
@@ -95,48 +106,6 @@ class CoroutineProcessor {
 	 */
 	public function updateTimer (timestamp:Float):Void {
 
-		updateDelayedRoutines(timestamp);
-
-	}
-	
-	public function updateExitFrame ():Void {
-
-		updateEndOfFrameRoutines();
-
-	}
-	
-	
-	// Private Methods
-	
-	
-	private inline function updateNextFrameRoutines ():Void {
-		
-		emptyStack = activeRoutines;
-		
-		activeRoutines = nextFrameStack;
-		nextFrameStack = emptyStack;
-		emptyStack = null;
-		
-		runActiveRoutines();
-		
-	}
-	
-	private inline function updateEndOfFrameRoutines ():Void {
-		
-		emptyStack = activeRoutines;
-		
-		activeRoutines  = endOfFrameStack;
-		endOfFrameStack = emptyStack;
-		emptyStack = null;
-		
-		runActiveRoutines();
-		
-	}
-	
-	private static var timestamp:Float;
-	
-	private inline function updateDelayedRoutines (timestamp:Float):Void {
-		
 		var i:Int = delayedRoutineList.length;
 		var last:Int = i;
 		
@@ -160,18 +129,31 @@ class CoroutineProcessor {
 				
 			}
 			
-			runActiveRoutines();
+			runRoutines(activeRoutines);
 			
 		}
+
 	}
 	
-	private function runActiveRoutines ():Void {
+	public function updateExitFrame ():Void {
+
+		emptyStack = activeRoutines;
 		
-		while (!activeRoutines.isEmpty())
-			runRoutine(activeRoutines.pop());
+		activeRoutines  = endOfFrameStack;
+		endOfFrameStack = emptyStack;
+		emptyStack = null;
+		
+		runRoutines(activeRoutines);
+
+	}
+
+	inline function runRoutines (routines:GenericStack<Routine>):Void {
+		
+		while (!routines.isEmpty())
+			runRoutine(routines.pop());
 	}
 	
-	private function runRoutine (routine:Routine):Void {
+	function runRoutine (routine:Routine):Void {
 		
 		if (!routine.hasNext()) {
 			
@@ -221,7 +203,7 @@ class CoroutineProcessor {
 		}
 	}
 	
-	private inline function removeRoutine (routine:Routine, runWaitingRoutine:Bool):Void {
+	inline function removeRoutine (routine:Routine, runWaitingRoutine:Bool):Void {
 		
 		if (!nextFrameStack.remove(routine)) {
 			
@@ -264,7 +246,7 @@ class CoroutineProcessor {
 		
 	}
 	
-	private inline function releaseSubRoutine (subroutine:Routine, runWaitingRoutines:Bool):Void {
+	inline function releaseSubRoutine (subroutine:Routine, runWaitingRoutines:Bool):Void {
 		
 		var length:Int = subroutineStack.length;
 		var subroutineIndex:Int = DoubleArrayTools.lastIndexOf(subroutineStack, subroutine, length);
