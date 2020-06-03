@@ -1,7 +1,7 @@
 package tests.basics;
 
 import utest.Assert;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 import coroutine.Routine.RoutineInstruction.*;
 
 class NextFrameTests implements utest.ITest {
@@ -14,13 +14,14 @@ class NextFrameTests implements utest.ITest {
 
         var obj = { v: [] };
 
-        var ch = new CoroutineProcessor();
+        var cr = new CoroutineRunner();
+        var ch = new CoroutineProcessor(cr);
 
-        ch.startCoroutine( returnA(obj) );
+        cr.startCoroutine( returnA(obj) );
         Assert.equals(1, obj.v[0]);
         Assert.equals(1, obj.v.length);
 
-        ch.startCoroutine( returnB(obj) );
+        cr.startCoroutine( returnB(obj) );
         Assert.equals(10, obj.v[1]);
         Assert.equals(2, obj.v.length);
 

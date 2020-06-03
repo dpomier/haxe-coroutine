@@ -3,7 +3,7 @@ package tests.benchs;
 import haxe.Timer;
 import utest.Assert;
 import coroutine.Routine;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 import tests.Tests.println;
 
 class WaitNextFrame implements utest.ITest {
@@ -15,8 +15,9 @@ class WaitNextFrame implements utest.ITest {
 
         var targetIteration = 10000;
 
-        var ch = new CoroutineProcessor();
-        ch.startCoroutine( getWaitNextFrameLoop() );
+        var cr = new CoroutineRunner();
+        var ch = new CoroutineProcessor(cr);
+        cr.startCoroutine( getWaitNextFrameLoop() );
         
         var startTime = Timer.stamp();
         var numSamples = 0;

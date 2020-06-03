@@ -4,7 +4,7 @@ import haxe.ds.GenericStack;
 import haxe.Timer;
 import utest.Assert;
 import coroutine.Routine;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 import tests.Tests.println;
 
 class WaitRoutine implements utest.ITest {
@@ -19,8 +19,9 @@ class WaitRoutine implements utest.ITest {
         for(_ in 0...targetIteration + 1)
             pool.add(getCoroutine());
 
-        var ch = new CoroutineProcessor();
-        ch.startCoroutine( getWaitRoutine(pool) );
+        var cr = new CoroutineRunner();
+        var ch = new CoroutineProcessor(cr);
+        cr.startCoroutine( getWaitRoutine(pool) );
         
         var startTime = Timer.stamp();
         var numSamples = 0;

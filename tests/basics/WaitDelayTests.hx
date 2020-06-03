@@ -4,14 +4,15 @@ import haxe.Timer;
 import utest.Assert;
 import coroutine.Routine;
 import coroutine.Routine.RoutineInstruction.WaitDelay;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 
 class WaitDelayTests implements utest.ITest {
 
-    var ch = new CoroutineProcessor();
+    var cr = new CoroutineRunner();
+    var ch:CoroutineProcessor;
 
     public function new () {
-        
+        ch = new CoroutineProcessor(cr);
     }
 
     function loop () {
@@ -29,7 +30,7 @@ class WaitDelayTests implements utest.ITest {
         loop();
 
         var obj = { value: 0 };
-        ch.startCoroutine( delay(obj) );
+        cr.startCoroutine( delay(obj) );
 
         var a = obj.value;
         var b = -1;

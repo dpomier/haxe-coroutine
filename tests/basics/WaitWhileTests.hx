@@ -3,21 +3,22 @@ package tests.basics;
 import utest.Assert;
 import coroutine.Routine;
 import coroutine.Routine.RoutineInstruction.*;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 
 class WaitWhileTests implements utest.ITest {
 
-    var ch = new CoroutineProcessor();
+    var cr = new CoroutineRunner();
+    var ch:CoroutineProcessor;
 
     var counter = 0;
 
     public function new () {
-        
+        ch = new CoroutineProcessor(cr);
     }
 
     public function testWhile () {
 
-        ch.startCoroutine( routine() );
+        cr.startCoroutine( routine() );
 
         for (i in 0...16) {
 

@@ -1,7 +1,7 @@
 package coroutine._;
 
 import coroutine.Routine.RoutineInstruction;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 
 abstract RI (Int) to Int {
 	public static inline function fromNull ():RI {
@@ -17,9 +17,9 @@ abstract RI (Int) to Int {
 		return new RI(2 + Std.int(1000. * s));
 	}
 	public static inline function waitRoutine (r:Routine):RI {
-        @:privateAccess CoroutineProcessor.subroutinesCounter--;
-        @:privateAccess CoroutineProcessor.subroutines.set(CoroutineProcessor.subroutinesCounter, r);
-		return new RI(@:privateAccess CoroutineProcessor.subroutinesCounter);
+        @:privateAccess CoroutineRunner.subroutinesCounter--;
+        @:privateAccess CoroutineRunner.subroutines.set(CoroutineRunner.subroutinesCounter, r);
+		return new RI(@:privateAccess CoroutineRunner.subroutinesCounter);
 	}
 	public static inline function waitWhile (f:Void->Bool):RI {
         return waitRoutine({

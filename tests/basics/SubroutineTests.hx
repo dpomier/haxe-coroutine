@@ -3,20 +3,21 @@ package tests.basics;
 import coroutine.Routine;
 import coroutine.Routine.RoutineInstruction.*;
 import utest.Assert;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 
 class SubroutineTests implements utest.ITest {
 
-    var ch = new CoroutineProcessor();
+    var cr = new CoroutineRunner();
+    var ch:CoroutineProcessor;
 
     public function new () {
-        
+        ch = new CoroutineProcessor(cr);
     }
 
     public function testSubroutine () {
 
         var report:Array<Int> = [];
-        ch.startCoroutine( routine(report) );
+        cr.startCoroutine( routine(report) );
 
         Assert.equals([1].toString(), report.toString());
         
@@ -63,8 +64,8 @@ class SubroutineTests implements utest.ITest {
             @yield return WaitNextFrame;
         })();
 
-        ch.startCoroutine( routine );
-        ch.startCoroutine( routine );
+        cr.startCoroutine( routine );
+        cr.startCoroutine( routine );
 
         Assert.pass();
 

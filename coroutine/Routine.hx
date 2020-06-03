@@ -48,7 +48,7 @@ enum RoutineInstruction {
 
 /**
  * Alias for iterator of routine instructions. Can be used to start coroutine executions.
- * See `CoroutineProcessor.startCoroutine` for an exemple.
+ * See `CoroutineRunner.startCoroutine` for an exemple.
  */
 #if display 
 typedef Routine = Iterator<RoutineInstruction>;

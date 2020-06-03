@@ -4,7 +4,7 @@ import haxe.ds.GenericStack;
 import haxe.Timer;
 import utest.Assert;
 import coroutine.Routine;
-import coroutine.CoroutineProcessor;
+import coroutine.CoroutineRunner;
 import tests.Tests.println;
 
 class Starting implements utest.ITest {
@@ -19,12 +19,13 @@ class Starting implements utest.ITest {
         for(_ in 0...targetIteration + 1)
             pool.add(getCoroutine());
 
-        var ch = new CoroutineProcessor();
+        var cr = new CoroutineRunner();
+        var ch = new CoroutineProcessor(cr);
         var startTime = Timer.stamp();
         var numSamples = 0;
         do {
 
-            inline ch.startCoroutine( pool.pop() );
+            inline cr.startCoroutine( pool.pop() );
 
         } while(++numSamples < targetIteration);
         var endTime = Timer.stamp();

@@ -26,7 +26,7 @@ package coroutine;
 import haxe.Timer;
 import haxe.ds.GenericStack;
 
-class CoroutineProcessor {
+class CoroutineRunner {
 	
 	private var coroutines:Array<Routine>;
 	private var activeRoutines:GenericStack<Routine>;
@@ -86,64 +86,6 @@ class CoroutineProcessor {
 
 		while (--i != -1) 
 			removeRoutine(coroutines.pop(), false);
-
-	}
-	
-	public function updateEnterFrame ():Void {
-
-		emptyStack = activeRoutines;
-
-		activeRoutines = nextFrameStack;
-		nextFrameStack = emptyStack;
-		emptyStack = null;
-
-		runRoutines(activeRoutines);
-
-	}
-
-	/**
-	 * @param timestamp Timestamp in seconds with fractions.
-	 */
-	public function updateTimer (timestamp:Float):Void {
-
-		var i:Int = delayedRoutineList.length;
-		var last:Int = i;
-		
-		if (i != 0) {
-			
-			while (--i != -1) {
-				
-				if (timestamp > delayedTimeList[i]) {
-					
-					activeRoutines.add(delayedRoutineList[i]);
-
-					delayedRoutineList[i] = delayedRoutineList[last];
-					delayedRoutineList.pop();
-					
-					delayedTimeList[i] = delayedTimeList[last];
-					delayedTimeList.pop();
-
-					last--;
-					
-				}
-				
-			}
-			
-			runRoutines(activeRoutines);
-			
-		}
-
-	}
-	
-	public function updateExitFrame ():Void {
-
-		emptyStack = activeRoutines;
-		
-		activeRoutines  = endOfFrameStack;
-		endOfFrameStack = emptyStack;
-		emptyStack = null;
-		
-		runRoutines(activeRoutines);
 
 	}
 
@@ -275,6 +217,72 @@ class CoroutineProcessor {
 		
 	}
 	
+}
+
+@:access(coroutine.CoroutineRunner)
+abstract CoroutineProcessor (CoroutineRunner) {
+	public inline function new (runner:CoroutineRunner) {
+		this = runner;
+	}
+
+	public function updateEnterFrame ():Void {
+
+		this.emptyStack = this.activeRoutines;
+
+		this.activeRoutines = this.nextFrameStack;
+		this.nextFrameStack = this.emptyStack;
+		this.emptyStack = null;
+
+		this.runRoutines(this.activeRoutines);
+
+	}
+
+	/**
+	 * @param timestamp Timestamp in seconds with fractions.
+	 */
+	public function updateTimer (timestamp:Float):Void {
+
+		var i:Int = this.delayedRoutineList.length;
+		var last:Int = i;
+		
+		if (i != 0) {
+			
+			while (--i != -1) {
+				
+				if (timestamp > this.delayedTimeList[i]) {
+					
+					this.activeRoutines.add(this.delayedRoutineList[i]);
+
+					this.delayedRoutineList[i] = this.delayedRoutineList[last];
+					this.delayedRoutineList.pop();
+					
+					this.delayedTimeList[i] = this.delayedTimeList[last];
+					this.delayedTimeList.pop();
+
+					last--;
+					
+				}
+				
+			}
+			
+			this.runRoutines(this.activeRoutines);
+			
+		}
+
+	}
+	
+	public function updateExitFrame ():Void {
+
+		this.emptyStack = this.activeRoutines;
+		
+		this.activeRoutines  = this.endOfFrameStack;
+		this.endOfFrameStack = this.emptyStack;
+		this.emptyStack = null;
+		
+		this.runRoutines(this.activeRoutines);
+
+	}
+
 }
 
 private extern class DoubleArrayTools {
