@@ -1,5 +1,8 @@
 coroutine
 =======
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md)
+
+*Support from Haxe `3.4.x` to `4.1.x`*
 
 This library is based on [yield](https://github.com/dpomier/haxe-yield) to provide a Unity-like cross-platform implementation.
 
