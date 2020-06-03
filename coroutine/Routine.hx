@@ -25,29 +25,29 @@ package coroutine;
 
 enum RoutineInstruction {
 	/**
-	 * Wait until the next frame then resume the routine
-	**/
+	 * Wait until the next frame, then resume the routine.
+	 */
 	WaitNextFrame;
 	/**
-	 * Wait until the end of the current frame then resume the routine
-	**/
+	 * Wait until the end of the current frame, then resume the routine.
+	 */
 	WaitEndOfFrame;
 	/**
-	 * Wait `s` seconds then resume the routine at the beginning of the next frame
-	**/
-	WaitDelay(seconds:Float);
-	/**
-	 * Run the subroutine `routine` and wait until it is complete then resume the routine
+	 * Wait `seconds` seconds, then resume the routine at the beginning of the next frame.
 	 */
-	WaitRoutine(routine:Routine);
+	WaitDelay(s:Float);
 	/**
-	 * Wait while `f` return true.
-	**/
+	 * Run `r` and wait until it is complete, then resume the routine.
+	 */
+	WaitRoutine(r:Routine);
+	/**
+	 * Wait while `f` returns true.
+	 */
 	WaitWhile(f:Void->Bool);
 }
 
 /**
- * Alias for iterator of routine instructions. Can be used to start coroutine execution.
+ * Alias for iterator of routine instructions. Can be used to start coroutine executions.
  * See `CoroutineProcessor.startCoroutine` for an exemple.
  */
 #if display 
