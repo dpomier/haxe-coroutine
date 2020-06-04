@@ -52,7 +52,7 @@ enum RoutineInstruction {
  */
 #if display 
 typedef Routine = Iterator<RoutineInstruction>;
-#elseif (haxe3 && cpp)
+#elseif (haxe_ver < 4.000 && cpp)
 // See https://github.com/HaxeFoundation/haxe/issues/3697
 abstract Routine (Dynamic) {
 	@:from static inline function _ (v:Iterator<coroutine._core.RI>):Routine
