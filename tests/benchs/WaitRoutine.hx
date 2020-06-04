@@ -11,7 +11,9 @@ class WaitRoutine implements utest.ITest {
 
 	public function new () { }
 
+	#if (!cpp && !php)
 	@:analyzer(ignore)
+	#end
 	public function testWaitRoutine () {
 
 		var targetIteration = 10000;

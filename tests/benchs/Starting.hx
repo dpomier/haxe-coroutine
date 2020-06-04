@@ -11,7 +11,9 @@ class Starting implements utest.ITest {
 
 	public function new () { }
 
+	#if (!cpp && !php)
 	@:analyzer(ignore)
+	#end
 	public function testStarting () {
 
 		var targetIteration = 10000;

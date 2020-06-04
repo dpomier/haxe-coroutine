@@ -10,7 +10,9 @@ class WaitNextFrame implements utest.ITest {
 
 	public function new () { }
 
+	#if (!cpp && !php)
 	@:analyzer(ignore)
+	#end
 	public function testWaitNextFrame () {
 
 		var targetIteration = 10000;
