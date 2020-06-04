@@ -1,0 +1,5 @@
+-main tests.Tests
+-lib utest
+-lib coroutine
+-dce full
+-D travis
