@@ -2,12 +2,12 @@
   "name": "coroutine",
   "url" : "https://github.com/dpomier/haxe-coroutine/",
   "license": "MIT",
-  "tags": ["cross", "utility"],
-  "description": "Coroutine for Haxe",
+  "tags": ["cross", "utility", "macro"],
+  "description": "Cross platform coroutine for Haxe",
   "version": "2.0.0",
-  "releasenote": "",
+  "releasenote": "Seamless yield expressions.",
   "contributors": ["dpomier"],
   "dependencies": {
-    "yield": ""
+    "yield": "3.1.0"
   }
 }
