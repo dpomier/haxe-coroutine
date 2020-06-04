@@ -25,7 +25,7 @@ class Starting implements utest.ITest {
 		var numSamples = 0;
 		do {
 
-			inline cr.startCoroutine( pool.pop() );
+			@:inline cr.startCoroutine( pool.pop() );
 
 		} while(++numSamples < targetIteration);
 		var endTime = Timer.stamp();

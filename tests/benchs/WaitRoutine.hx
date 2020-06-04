@@ -27,7 +27,7 @@ class WaitRoutine implements utest.ITest {
 		var numSamples = 0;
 		do {
 
-			inline ch.updateEnterFrame();
+			@:inline ch.updateEnterFrame();
 
 		} while(++numSamples < targetIteration);
 		var endTime = Timer.stamp();
