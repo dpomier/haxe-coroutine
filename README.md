@@ -19,23 +19,13 @@ class Example {
     static var runner = new CoroutineRunner();
     static var processor = new CoroutineProcessor(runner);
 
-    static function loop() {
-
-        // Custom the update of your coroutines
-        processor.updateEnterFrame();
-        processor.updateTimer(haxe.Timer.stamp());
-        processor.updateExitFrame();
-
-        haxe.Timer.delay(loop, 16);
-    }
-
     static function main() {
-
-        loop();
 
         // Start a coroutine
         runner.startCoroutine( count() );
 
+        // Dummy loop for the example
+        loop();
     }
 
     static function count() {
@@ -45,9 +35,19 @@ class Example {
             @yield return RoutineInstruction.WaitNextFrame;
         }
     }
+
+    static function loop() {
+
+        // Customize how/when to update your coroutines
+        processor.updateEnterFrame();
+        processor.updateTimer(haxe.Timer.stamp());
+        processor.updateExitFrame();
+
+        haxe.Timer.delay(loop, 16);
+    }
 }
 ```
-The above example will trace repetitively from `"0"` to infinity (almost). You can try it with `haxe -lib coroutine --run Example.hx`.
+The above example will trace repetitively every 16 ms from `"0"` to (almost) infinity. You can try it with `haxe -lib coroutine --run Example.hx`.
 
 Install
 -----
