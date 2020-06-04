@@ -21,10 +21,10 @@ class WaitNextFrame implements utest.ITest {
 		
 		var startTime = Timer.stamp();
 		var numSamples = 0;
-		/* inline */ ch.updateEnterFrame();
+		@:inline ch.updateEnterFrame();
 		do {
 
-			/* inline */ ch.updateEnterFrame();
+			@:inline ch.updateEnterFrame();
 
 		} while(++numSamples < targetIteration);
 		var endTime = Timer.stamp();
