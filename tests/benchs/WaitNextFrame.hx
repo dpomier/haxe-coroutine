@@ -10,7 +10,7 @@ class WaitNextFrame implements utest.ITest {
 
 	public function new () { }
 
-	#if (!cpp && !php)
+	#if (!cpp && !php && !lua)
 	@:analyzer(ignore)
 	#end
 	public function testWaitNextFrame () {
