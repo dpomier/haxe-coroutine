@@ -109,15 +109,15 @@ class CoroutineRunner {
 		
 		var current:Int = routine.next();
 		
-		if (current == coroutine._.RI.waitNext()) {
+		if (current == coroutine._core.RI.waitNext()) {
 				
 			nextFrameStack.add(routine);
 				
-		} else if (current == coroutine._.RI.waitEnd()) {
+		} else if (current == coroutine._core.RI.waitEnd()) {
 				
 			endOfFrameStack.add(routine);
 				
-		} else if (current >= (coroutine._.RI.waitDelay(0):Int)) {
+		} else if (current >= (coroutine._core.RI.waitDelay(0):Int)) {
 
 			delayedRoutineList.push(routine);
 			delayedTimeList.push(Timer.stamp() + (current - 2) / 1000);

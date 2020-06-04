@@ -1,4 +1,4 @@
-package coroutine._;
+package coroutine._core;
 
 import coroutine.Routine.RoutineInstruction;
 import coroutine.CoroutineRunner;

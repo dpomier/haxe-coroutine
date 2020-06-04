@@ -53,5 +53,5 @@ enum RoutineInstruction {
 #if display 
 typedef Routine = Iterator<RoutineInstruction>;
 #else
-typedef Routine = Iterator<coroutine._.RI>;
+typedef Routine = Iterator<coroutine._core.RI>;
 #end
