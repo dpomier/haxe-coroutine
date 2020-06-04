@@ -10,7 +10,7 @@ class WaitNextFrame implements utest.ITest {
 
 	public function new () { }
 
-	#if (!cpp && !php && !lua)
+	#if (!cpp && !php && (!lua || haxe_ver >= 4.100)) // See https://github.com/HaxeFoundation/haxe/issues/8767
 	@:analyzer(ignore)
 	#end
 	public function testWaitNextFrame () {
