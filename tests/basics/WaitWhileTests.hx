@@ -7,38 +7,38 @@ import coroutine.CoroutineRunner;
 
 class WaitWhileTests implements utest.ITest {
 
-    var cr = new CoroutineRunner();
-    var ch:CoroutineProcessor;
+	var cr = new CoroutineRunner();
+	var ch:CoroutineProcessor;
 
-    var counter = 0;
+	var counter = 0;
 
-    public function new () {
-        ch = new CoroutineProcessor(cr);
-    }
+	public function new () {
+		ch = new CoroutineProcessor(cr);
+	}
 
-    public function testWhile () {
+	public function testWhile () {
 
-        cr.startCoroutine( routine() );
+		cr.startCoroutine( routine() );
 
-        for (i in 0...16) {
+		for (i in 0...16) {
 
-            ch.updateEnterFrame();
-            ch.updateTimer( haxe.Timer.stamp() );
-            ch.updateExitFrame();
-        }
+			ch.updateEnterFrame();
+			ch.updateTimer( haxe.Timer.stamp() );
+			ch.updateExitFrame();
+		}
 
-        Assert.equals(5, counter);
-    }
+		Assert.equals(5, counter);
+	}
 
-    function isActive ():Bool {
+	function isActive ():Bool {
 
-        return ++counter < 5;
-    }
+		return ++counter < 5;
+	}
 
-    function routine () {
+	function routine () {
 
-        @yield return WaitWhile( isActive );
+		@yield return WaitWhile( isActive );
 
-    }
+	}
 
 }

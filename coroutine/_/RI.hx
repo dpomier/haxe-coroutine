@@ -17,12 +17,12 @@ abstract RI (Int) to Int {
 		return new RI(2 + Std.int(1000. * s));
 	}
 	public static inline function waitRoutine (r:Routine):RI {
-        @:privateAccess CoroutineRunner.subroutinesCounter--;
-        @:privateAccess CoroutineRunner.subroutines.set(CoroutineRunner.subroutinesCounter, r);
+		@:privateAccess CoroutineRunner.subroutinesCounter--;
+		@:privateAccess CoroutineRunner.subroutines.set(CoroutineRunner.subroutinesCounter, r);
 		return new RI(@:privateAccess CoroutineRunner.subroutinesCounter);
 	}
 	public static inline function waitWhile (f:Void->Bool):RI {
-        return waitRoutine({
+		return waitRoutine({
 			hasNext: f,
 			next: waitNext
 		});

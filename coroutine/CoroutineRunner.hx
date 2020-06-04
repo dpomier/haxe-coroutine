@@ -43,16 +43,16 @@ class CoroutineRunner {
 	
 	public function new () {
 		
-		coroutines     = [];
+		coroutines = [];
 		activeRoutines = new GenericStack<Routine>();
 		
-		nextFrameStack  = new GenericStack<Routine>();
+		nextFrameStack = new GenericStack<Routine>();
 		endOfFrameStack = new GenericStack<Routine>();
 		
 		delayedRoutineList = new Array<Routine>();
-		delayedTimeList    = new Array<Float>();
+		delayedTimeList = new Array<Float>();
 		
-		subroutineStack     = new Array<Routine>();
+		subroutineStack = new Array<Routine>();
 		waitingRoutineStack = new Array<GenericStack<Routine>>();
 	}
 

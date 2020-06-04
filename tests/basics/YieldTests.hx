@@ -5,23 +5,23 @@ import utest.Assert;
 @:yield
 class YieldTests implements utest.ITest {
 
-    public function new () {
-        
-    }
+	public function new () {
+		
+	}
 
-    public function testBasicYield () {
+	public function testBasicYield () {
 
-        var it = basicYield();
-        Assert.isTrue(it.hasNext());
-        Assert.equals("Hello", it.next());
-        Assert.equals("World", it.next());
-        Assert.isFalse(it.hasNext());
-    }
+		var it = basicYield();
+		Assert.isTrue(it.hasNext());
+		Assert.equals("Hello", it.next());
+		Assert.equals("World", it.next());
+		Assert.isFalse(it.hasNext());
+	}
 
-    function basicYield () {
+	function basicYield () {
 
-        @yield return "Hello";
-        @yield return "World";
-    }
+		@yield return "Hello";
+		@yield return "World";
+	}
 
 }

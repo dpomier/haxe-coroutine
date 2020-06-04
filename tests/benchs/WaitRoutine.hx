@@ -9,39 +9,39 @@ import tests.Tests.println;
 
 class WaitRoutine implements utest.ITest {
 
-    public function new () { }
+	public function new () { }
 
-    @:analyzer(ignore)
-    public function testWaitRoutine () {
+	@:analyzer(ignore)
+	public function testWaitRoutine () {
 
-        var targetIteration = 10000;
-        var pool = new GenericStack<Routine>();
-        for(_ in 0...targetIteration + 1)
-            pool.add(getCoroutine());
+		var targetIteration = 10000;
+		var pool = new GenericStack<Routine>();
+		for(_ in 0...targetIteration + 1)
+			pool.add(getCoroutine());
 
-        var cr = new CoroutineRunner();
-        var ch = new CoroutineProcessor(cr);
-        cr.startCoroutine( getWaitRoutine(pool) );
-        
-        var startTime = Timer.stamp();
-        var numSamples = 0;
-        do {
+		var cr = new CoroutineRunner();
+		var ch = new CoroutineProcessor(cr);
+		cr.startCoroutine( getWaitRoutine(pool) );
+		
+		var startTime = Timer.stamp();
+		var numSamples = 0;
+		do {
 
-            inline ch.updateEnterFrame();
+			inline ch.updateEnterFrame();
 
-        } while(++numSamples < targetIteration);
-        var endTime = Timer.stamp();
-        var mu = (endTime - startTime) * 1000000.;
-        println('Bench: wait routine = ${mu / numSamples} (μs)');
-        utest.Assert.isTrue(true);
-    }
+		} while(++numSamples < targetIteration);
+		var endTime = Timer.stamp();
+		var mu = (endTime - startTime) * 1000000.;
+		println('Bench: wait routine = ${mu / numSamples} (μs)');
+		utest.Assert.isTrue(true);
+	}
 
-    static function getWaitRoutine (pool:GenericStack<Routine>) {
-        while( true )
-            @yield return RoutineInstruction.WaitRoutine( pool.pop() );
-    }
+	static function getWaitRoutine (pool:GenericStack<Routine>) {
+		while( true )
+			@yield return RoutineInstruction.WaitRoutine( pool.pop() );
+	}
 
-    static function getCoroutine () {
-        @yield return RoutineInstruction.WaitNextFrame;
-    }
+	static function getCoroutine () {
+		@yield return RoutineInstruction.WaitNextFrame;
+	}
 }
