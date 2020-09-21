@@ -59,6 +59,6 @@ Development Builds
 
 1. To clone the github repository, use `git clone https://github.com/dpomier/haxe-coroutine`
 
-2. To tell haxelib where your development copy is installed, use `haxelib dev yield my/repositories/haxe-coroutine`
+2. To tell haxelib where your development copy is installed, use `haxelib dev coroutine path/to/haxe-coroutine`
 
 To return to release builds use `haxelib dev coroutine`
