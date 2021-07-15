@@ -21,27 +21,32 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  */
+
 package coroutine;
 
 enum RoutineInstruction {
 	/**
-	 * Wait until the next frame, then resume the routine.
+		Wait until the next frame, then resume the routine.
 	 */
 	WaitNextFrame;
+
 	/**
-	 * Wait until the end of the current frame, then resume the routine.
+		Wait until the end of the current frame, then resume the routine.
 	 */
 	WaitEndOfFrame;
+
 	/**
-	 * Wait `seconds` seconds, then resume the routine at the beginning of the next frame.
+		Wait `seconds` seconds, then resume the routine at the beginning of the next frame.
 	 */
 	WaitDelay(s:Float);
+
 	/**
-	 * Run `r` and wait until it is complete, then resume the routine.
+		Run `r` and wait until it is complete, then resume the routine.
 	 */
 	WaitRoutine(r:Routine);
+
 	/**
-	 * Wait while `f` returns true.
+		Wait while `f` returns true.
 	 */
 	WaitWhile(f:Void->Bool);
 }
@@ -50,17 +55,19 @@ enum RoutineInstruction {
  * Alias for iterator of routine instructions. Can be used to start coroutine executions.
  * See `CoroutineRunner.startCoroutine` for an exemple.
  */
-#if display 
+#if display
 typedef Routine = Iterator<RoutineInstruction>;
 #elseif (cpp && haxe_ver < 4.000)
 // See https://github.com/HaxeFoundation/haxe/issues/3697
-abstract Routine (Dynamic) {
-	@:from static inline function _ (v:Iterator<coroutine._core.RI>):Routine
+abstract Routine(Dynamic) {
+	@:from static inline function _(v:Iterator<coroutine._core.RI>):Routine
 		return cast v;
-	public inline function next ():coroutine._core.RI
-		return (this:Iterator<coroutine._core.RI>).next();
-	public inline function hasNext ():Bool
-		return (this:Iterator<coroutine._core.RI>).hasNext();
+
+	public inline function next():coroutine._core.RI
+		return (this : Iterator<coroutine._core.RI>).next();
+
+	public inline function hasNext():Bool
+		return (this : Iterator<coroutine._core.RI>).hasNext();
 }
 #else
 typedef Routine = Iterator<coroutine._core.RI>;
