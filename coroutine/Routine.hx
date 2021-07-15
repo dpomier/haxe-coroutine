@@ -24,6 +24,12 @@
 
 package coroutine;
 
+/**
+ * Alias for iterator of routine instructions. Can be used to start coroutine executions.
+ * See `CoroutineRunner.startCoroutine` for an exemple.
+ */
+typedef Routine = #if display Iterator<RoutineInstruction> #else coroutine._core.Routine #end;
+
 enum RoutineInstruction {
 	/**
 		Wait until the next frame, then resume the routine.
@@ -50,25 +56,3 @@ enum RoutineInstruction {
 	 */
 	WaitWhile(f:Void->Bool);
 }
-
-/**
- * Alias for iterator of routine instructions. Can be used to start coroutine executions.
- * See `CoroutineRunner.startCoroutine` for an exemple.
- */
-#if display
-typedef Routine = Iterator<RoutineInstruction>;
-#elseif (cpp && haxe_ver < 4.000)
-// See https://github.com/HaxeFoundation/haxe/issues/3697
-abstract Routine(Dynamic) {
-	@:from static inline function _(v:Iterator<coroutine._core.RI>):Routine
-		return cast v;
-
-	public inline function next():coroutine._core.RI
-		return (this : Iterator<coroutine._core.RI>).next();
-
-	public inline function hasNext():Bool
-		return (this : Iterator<coroutine._core.RI>).hasNext();
-}
-#else
-typedef Routine = Iterator<coroutine._core.RI>;
-#end
