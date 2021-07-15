@@ -8,6 +8,6 @@
   "releasenote": "Seamless yield expressions.",
   "contributors": ["dpomier"],
   "dependencies": {
-    "yield": "3.1.0"
+    "yield": "3.2.0"
   }
 }
