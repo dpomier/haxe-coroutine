@@ -14,40 +14,30 @@ Example
 import coroutine.Routine;
 import coroutine.CoroutineRunner;
 
-class Example {
-
-    static var runner = new CoroutineRunner();
-    static var processor = new CoroutineProcessor(runner);
-
-    static function main() {
-
-        // Start a coroutine
-        runner.startCoroutine( count() );
-
-        // Dummy loop for the example
-        loop();
+function count() {
+    var i = 0;
+    while(true) {
+        trace(i++);
+        @yield return WaitNextFrame;
     }
+}
 
-    static function count() {
-        var i = 0;
-        while(true) {
-            trace(i++);
-            @yield return RoutineInstruction.WaitNextFrame;
-        }
-    }
+function main() {
+    // Start a coroutine
+    var runner = new CoroutineRunner();
+    runner.startCoroutine( count() );
 
-    static function loop() {
-
+    // Dummy loop for the example
+    new haxe.Timer(16).run = function() {
         // Customize how/when to update your coroutines
+        var processor = CoroutineProcessor.of(runner);
         processor.updateEnterFrame();
         processor.updateTimer(haxe.Timer.stamp());
         processor.updateExitFrame();
-
-        haxe.Timer.delay(loop, 16);
     }
 }
 ```
-The above example will trace repetitively every 16 ms from `"0"` to (almost) infinity. You can try it with `haxe -lib coroutine --run Example.hx`.
+The above example will trace every 16 ms `0`, `1`, `2`, `3`, etc. You can try it with `haxe -lib coroutine --run Main.hx`.
 
 Install
 -----
