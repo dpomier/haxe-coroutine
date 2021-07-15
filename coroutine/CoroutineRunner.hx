@@ -166,6 +166,11 @@ class CoroutineRunner {
 
 @:access(coroutine.CoroutineRunner)
 abstract CoroutineProcessor(CoroutineRunner) {
+
+	public static inline function of(runner:CoroutineRunner):CoroutineProcessor {
+		return new CoroutineProcessor(runner);
+	}
+
 	public inline function new(runner:CoroutineRunner) {
 		this = runner;
 	}
