@@ -1,7 +1,7 @@
 coroutine
 =======
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE.md)
-[![TravisCI Build Status](https://travis-ci.org/dpomier/haxe-coroutine.svg?branch=master)](https://travis-ci.org/dpomier/haxe-coroutine)
+[![TravisCI Build Status](https://travis-ci.com/dpomier/haxe-coroutine.svg?branch=master)](https://travis-ci.com/dpomier/haxe-coroutine)
 
 *Support from Haxe `3.4.x` to `4.1.x`*
 
