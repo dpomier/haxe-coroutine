@@ -5,9 +5,9 @@
   "tags": ["cross", "utility", "macro"],
   "description": "Cross platform coroutine for Haxe",
   "version": "2.0.1",
-  "releasenote": "Update yield to 3.2.0.",
+  "releasenote": "Update yield to 3.2.1.",
   "contributors": ["dpomier"],
   "dependencies": {
-    "yield": "3.2.0"
+    "yield": "3.2.1"
   }
 }
