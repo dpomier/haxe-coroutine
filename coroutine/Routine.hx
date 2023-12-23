@@ -52,7 +52,7 @@ enum RoutineInstruction {
 	WaitRoutine(r:Routine);
 
 	/**
-		Wait while `f` returns true.
+		Wait while `f` returns `true`. The routine resumes when `false` is returned.
 	 */
 	WaitWhile(f:Void->Bool);
 }
