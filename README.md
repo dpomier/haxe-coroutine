@@ -11,15 +11,18 @@ Example
 
 ```haxe
 import coroutine.Routine;
-import coroutine.CoroutineRunner;
 
-function count() {
+function count():Routine {
     var i = 0;
     while(true) {
         trace(i++);
         @yield return WaitNextFrame;
     }
 }
+```
+The above example will trace `0`, `1`, `2`, `3`, and so on at each step of the coroutine. To run, `startCoroutine` must be called as follow:
+```haxe
+import coroutine.CoroutineRunner;
 
 function main() {
     // Start a coroutine
@@ -29,6 +32,7 @@ function main() {
     // Dummy loop for the example
     new haxe.Timer(16).run = function() {
         // Customize how/when to update your coroutines
+        // Set this at your convenience in your project
         var processor = CoroutineProcessor.of(runner);
         processor.updateEnterFrame();
         processor.updateTimer(haxe.Timer.stamp());
@@ -36,12 +40,51 @@ function main() {
     }
 }
 ```
-The above example will trace every 16 ms `0`, `1`, `2`, `3`, etc. You can try it with `haxe -lib coroutine --run Main.hx`.
+In this example the coroutine `cout` is resuming with an interval of 16 ms.
+
+Instructions
+-----
+
+Coroutines are functions that returns with `@yield` any enum value of `RoutineInstruction`:
+
+```haxe
+enum RoutineInstruction {
+	/**
+		Wait until the next frame,
+        then resume the routine.
+	 */
+	WaitNextFrame;
+
+	/**
+		Wait until the end of the current
+        frame, then resume the routine.
+	 */
+	WaitEndOfFrame;
+
+	/**
+		Wait `seconds` seconds, then resume the
+        routine at the beginning of the next frame.
+	 */
+	WaitDelay(s:Float);
+
+	/**
+		Run `r` and wait until it is complete,
+        then resume the routine.
+	 */
+	WaitRoutine(r:Routine);
+
+	/**
+		Wait while `f` returns `true`. The
+        routine resumes when `false` is returned.
+	 */
+	WaitWhile(f:Void->Bool);
+}
+```
 
 Install
 -----
 
-To install the library, use `haxelib install coroutine` and compile your program with `-lib coroutine`.
+To install the library, use `haxelib install coroutine` and compile your program with `--library coroutine`.
 
 Development Builds
 -----
