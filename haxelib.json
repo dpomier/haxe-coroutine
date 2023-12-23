@@ -4,8 +4,8 @@
   "license": "MIT",
   "tags": ["cross", "utility", "macro"],
   "description": "Cross platform coroutine for Haxe",
-  "version": "2.0.2",
-  "releasenote": "Update yield to 3.2.1.",
+  "version": "2.0.3",
+  "releasenote": "Update yield to 3.2.2",
   "contributors": ["dpomier"],
   "dependencies": {
     "yield": "3.2.2"
