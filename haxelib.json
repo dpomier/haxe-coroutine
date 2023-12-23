@@ -8,6 +8,6 @@
   "releasenote": "Update yield to 3.2.1.",
   "contributors": ["dpomier"],
   "dependencies": {
-    "yield": "3.2.1"
+    "yield": "3.2.2"
   }
 }
